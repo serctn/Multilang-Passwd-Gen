@@ -1,1 +1,1 @@
-# Chinese-Password-Generator
+# Multilang-Passwd-Gen
