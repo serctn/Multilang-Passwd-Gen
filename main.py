@@ -7,10 +7,10 @@ http://sam.zoy.org/wtfpl/COPYING for more details.
 """
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit
+from PyQt6.QtGui import QIcon
 import random
 import string
 import pyperclip
-from PyQt6.QtGui import QIcon
 import os
 import requests
 
@@ -23,10 +23,11 @@ class PasswordGenerator(QWidget):
 
     def init_ui(self):
         layout = QVBoxLayout()
+        layout = QVBoxLayout()
 
         self.length_label = QLabel("Password Length:")
         self.length_input = QLineEdit()
-        self.generate_button = QPushButton("Generate and Copy Password")
+        self.generate_button = QPushButton("Generate and Copy 'Multilang' Password")
         self.show_password_button = QPushButton("Show Password")
         self.generated_password_output = QTextEdit()
         self.generated_password_output.setReadOnly(True)
@@ -50,6 +51,12 @@ class PasswordGenerator(QWidget):
         self.setWindowTitle("Password Generator")
 
         self.show_password_button.setEnabled(False)
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QApplication.primaryScreen().geometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def set_app_icon(self):
         icon_path = self.get_icon_path()
@@ -79,6 +86,10 @@ class PasswordGenerator(QWidget):
             self.generated_password_output.setPlainText("Please enter the password length.")
             return
 
+        if not length_text.isdigit():
+            self.generated_password_output.setPlainText("Please enter a valid password length (only digits).")
+            return
+
         length = int(length_text)
         if length < 4:
             self.generated_password_output.setPlainText("Password length should be at least 4 characters.")
@@ -91,7 +102,6 @@ class PasswordGenerator(QWidget):
 
         all_characters = latin_letters + latin_small + digits + special_characters 
 
-        # Generate password
         password = random.choice(latin_letters) + \
                    random.choice(latin_small) + \
                    random.choice(digits) + \
@@ -117,10 +127,15 @@ class PasswordGenerator(QWidget):
             self.generated_password_output.setPlainText("Please enter the password length.")
             return
 
+        if not length_text.isdigit():
+            self.generated_password_output.setPlainText("Please enter a valid password length (only digits).")
+            return
+
         length = int(length_text)
         if length < 18:
             self.generated_password_output.setPlainText("Password length should be at least 18 characters.")
             return
+
         
         latin_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         latin_small = "abcdefghijklmnopqrstuvwxyz"
@@ -147,7 +162,7 @@ class PasswordGenerator(QWidget):
                          greek_letters + chinese_characters + japanese_characters + korean_characters + \
                          german_letters + spanish_letters + french_letters
 
-        # Generate password
+
         password = random.choice(latin_letters) + \
                    random.choice(latin_small) + \
                    random.choice(digits) + \
