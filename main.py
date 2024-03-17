@@ -84,15 +84,18 @@ class PasswordGenerator(QWidget):
         length_text = self.length_input.text()
         if not length_text:
             self.generated_password_output.setPlainText("Please enter the password length.")
+            self.show_password_button.setEnabled(False)
             return
 
         if not length_text.isdigit():
             self.generated_password_output.setPlainText("Please enter a valid password length (only digits).")
+            self.show_password_button.setEnabled(False)
             return
 
         length = int(length_text)
         if length < 4:
             self.generated_password_output.setPlainText("Password length should be at least 4 characters.")
+            self.show_password_button.setEnabled(False)
             return
         
         latin_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -125,15 +128,18 @@ class PasswordGenerator(QWidget):
         length_text = self.length_input.text()
         if not length_text:
             self.generated_password_output.setPlainText("Please enter the password length.")
+            self.show_password_button.setEnabled(False)
             return
 
         if not length_text.isdigit():
             self.generated_password_output.setPlainText("Please enter a valid password length (only digits).")
+            self.show_password_button.setEnabled(False)
             return
 
         length = int(length_text)
         if length < 18:
             self.generated_password_output.setPlainText("Password length should be at least 18 characters.")
+            self.show_password_button.setEnabled(False)
             return
 
         
