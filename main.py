@@ -8,6 +8,7 @@ http://sam.zoy.org/wtfpl/COPYING for more details.
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit
 from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import pyqtSlot
 import random
 import string
 import pyperclip
@@ -20,9 +21,9 @@ class PasswordGenerator(QWidget):
         self.init_ui()
         self.generated_password = ""
         self.setFixedSize(300, 250)
+        
 
     def init_ui(self):
-        layout = QVBoxLayout()
         layout = QVBoxLayout()
 
         self.length_label = QLabel("Password Length:")
@@ -43,20 +44,29 @@ class PasswordGenerator(QWidget):
         layout.addWidget(self.normal_password_checkbox)
         layout.addWidget(self.show_password_button)
         layout.addWidget(self.generated_password_output)
-        
 
         self.setLayout(layout)
         self.set_app_icon()
-
         self.setWindowTitle("Password Generator")
+
+        self.show_password_button.setEnabled(False)
+        self.activateWindow()
+
+
+        self.length_input.textChanged.connect(self.disable_show_password_button)
+
+
+    @pyqtSlot()
+    def disable_show_password_button(self):
 
         self.show_password_button.setEnabled(False)
 
     def center(self):
-        qr = self.frameGeometry()
-        cp = QApplication.primaryScreen().geometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
+        screen_geometry = QApplication.primaryScreen().geometry()
+        window_geometry = self.frameGeometry()
+        x = (screen_geometry.width() - window_geometry.width()) / 2
+        y = (screen_geometry.height() - window_geometry.height()) / 2
+        self.move(x, y)
 
     def set_app_icon(self):
         icon_path = self.get_icon_path()
@@ -207,6 +217,7 @@ class PasswordGenerator(QWidget):
         
     def show_password(self):
         self.generated_password_output.setPlainText(self.generated_password)
+        self.show_password_button.setEnabled(False)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
