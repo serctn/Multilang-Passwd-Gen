@@ -61,14 +61,16 @@ class PasswordGenerator(QWidget):
     def set_app_icon(self):
         icon_path = self.get_icon_path()
         if not os.path.exists(icon_path):
-            
-            icon_url = "https://raw.githubusercontent.com/serctn/Chinese-Password-Generator/main/icon.ico"
-            response = requests.get(icon_url)
-            if response.status_code == 200:
-                with open(icon_path, "wb") as f:
-                    f.write(response.content)
+            self.download_icon(icon_path)
 
         self.setWindowIcon(QIcon(icon_path))
+
+    def download_icon(self, icon_path):
+        icon_url = "https://raw.githubusercontent.com/serctn/Chinese-Password-Generator/main/icon.ico"
+        response = requests.get(icon_url)
+        if response.status_code == 200:
+            with open(icon_path, "wb") as f:
+                f.write(response.content)
 
     def get_icon_path(self):
         if sys.platform.startswith('win32'):
@@ -79,6 +81,7 @@ class PasswordGenerator(QWidget):
         os.makedirs(icon_dir, exist_ok=True)
 
         return os.path.join(icon_dir, 'icon.ico')
+
 
     def normal_password_changed(self):
         length_text = self.length_input.text()
